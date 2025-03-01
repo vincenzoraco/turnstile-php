@@ -46,10 +46,11 @@ class Turnstile
                 CURLOPT_FOLLOWLOCATION => 1,
                 CURLOPT_CONNECTTIMEOUT => $data->getConnectionTimeout(),
                 CURLOPT_TIMEOUT => $data->getResponseTimeout(),
-                CURLOPT_POSTFIELDS => json_encode([
+                CURLOPT_POSTFIELDS => json_encode(array_filter([
                     'secret' => $this->secret,
                     'response' => $data->getToken(),
-                ]),
+                    'remoteip' => $data->getIp(),
+                ])),
             ],
         );
 
