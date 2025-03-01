@@ -21,4 +21,4 @@ $response = $turnstile->validate(new TurnstileValidateDTO(
 $response->isSuccess(); // bool
 ```
 
-**Skeleton PHP** was created by **[Vincenzo Raco](https://github.com/vincenzoraco)**.
+**Turnstile PHP** was created by **[Vincenzo Raco](https://github.com/vincenzoraco)**.
