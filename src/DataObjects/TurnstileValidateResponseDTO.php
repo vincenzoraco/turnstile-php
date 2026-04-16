@@ -49,7 +49,7 @@ readonly class TurnstileValidateResponseDTO
      */
     public function getErrors(): array
     {
-        return array_map(fn (string $errorCode): TurnstileError => TurnstileError::from($errorCode), $this->errors);
+        return array_map(fn (string $errorCode): TurnstileError => TurnstileError::tryFrom($errorCode) ?? TurnstileError::UNDOCUMENTED, $this->errors);
     }
 
     public function getAction(): ?string
