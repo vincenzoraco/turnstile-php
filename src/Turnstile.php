@@ -25,11 +25,11 @@ class Turnstile
 
         return new TurnstileValidateResponseDTO(
             $response['success'],
-            $response['challenge_ts'] ?? '',
-            $response['hostname'] ?? '',
+            $response['challenge_ts'] ?? null,
+            $response['hostname'] ?? null,
             $response['error-codes'],
-            $response['action'] ?? '',
-            $response['cdata'] ?? '',
+            $response['action'] ?? null,
+            $response['cdata'] ?? null,
             $response['metadata']['ephemeral_id'] ?? null,
         );
     }

@@ -12,11 +12,11 @@ readonly class TurnstileValidateResponseDTO
      */
     public function __construct(
         private bool $success,
-        private string $challengeTimestamp,
-        private string $hostname,
+        private ?string $challengeTimestamp,
+        private ?string $hostname,
         private array $errors,
-        private string $action,
-        private string $customerData,
+        private ?string $action,
+        private ?string $customerData,
         private ?string $ephemeralId,
     ) {}
 
@@ -30,12 +30,16 @@ readonly class TurnstileValidateResponseDTO
         return ! $this->isSuccess();
     }
 
-    public function getChallengeDatetime(): CarbonImmutable
+    public function getChallengeDatetime(): ?CarbonImmutable
     {
+        if ($this->challengeTimestamp === null) {
+            return null;
+        }
+
         return CarbonImmutable::parse($this->challengeTimestamp);
     }
 
-    public function getHostname(): string
+    public function getHostname(): ?string
     {
         return $this->hostname;
     }
@@ -48,12 +52,12 @@ readonly class TurnstileValidateResponseDTO
         return array_map(fn (string $errorCode): TurnstileError => TurnstileError::from($errorCode), $this->errors);
     }
 
-    public function getAction(): string
+    public function getAction(): ?string
     {
         return $this->action;
     }
 
-    public function getCustomerData(): string
+    public function getCustomerData(): ?string
     {
         return $this->customerData;
     }
