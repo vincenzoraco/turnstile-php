@@ -6,6 +6,8 @@ namespace VincenzoRaco\Turnstile;
 
 use VincenzoRaco\Turnstile\DataObjects\TurnstileValidateDTO;
 use VincenzoRaco\Turnstile\DataObjects\TurnstileValidateResponseDTO;
+use VincenzoRaco\Turnstile\Exceptions\ConnectionException;
+use VincenzoRaco\Turnstile\Exceptions\InvalidResponseException;
 
 class Turnstile
 {
@@ -18,24 +20,34 @@ class Turnstile
     public function validate(
         TurnstileValidateDTO $data,
     ): TurnstileValidateResponseDTO {
+        /** @var array{success: bool, 'error-codes': string[], metadata?: array{ephemeral_id?: string}, challenge_ts?: string, hostname?: string, action?: string, cdata?: string} $response */
         $response = $this->getValidation($data);
 
         return new TurnstileValidateResponseDTO(
             $response['success'],
-            $response['challenge_ts'],
-            $response['hostname'],
+            $response['challenge_ts'] ?? '',
+            $response['hostname'] ?? '',
             $response['error-codes'],
-            $response['action'],
-            $response['cdata'],
+            $response['action'] ?? '',
+            $response['cdata'] ?? '',
             $response['metadata']['ephemeral_id'] ?? null,
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function getValidation(
         TurnstileValidateDTO $data,
     ): array {
+        $curl = curl_init();
+
+        if ($curl === false) {
+            throw new ConnectionException('Failed to initialize cURL session');
+        }
+
         curl_setopt_array(
-            $curl = curl_init(),
+            $curl,
             [
                 CURLOPT_URL => $this->turnstileUrl,
                 CURLOPT_HTTPHEADER => [
@@ -56,8 +68,27 @@ class Turnstile
 
         $response = curl_exec($curl);
 
+        if (! is_string($response)) {
+            $error = curl_error($curl);
+            $errno = curl_errno($curl);
+            curl_close($curl);
+
+            throw new ConnectionException(
+                sprintf('cURL request failed: [%d] %s', $errno, $error),
+                $errno,
+            );
+        }
+
         curl_close($curl);
 
-        return json_decode($response, true);
+        $decoded = json_decode($response, true);
+
+        if (! is_array($decoded)) {
+            throw new InvalidResponseException(
+                sprintf('Failed to decode JSON response: %s', $response),
+            );
+        }
+
+        return $decoded;
     }
 }
