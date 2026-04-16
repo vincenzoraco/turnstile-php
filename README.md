@@ -11,7 +11,7 @@ composer require vincenzoraco/turnstile-php
 ### Usage
 
 ```php
-$turnstile = new Turnstile($secret));
+$turnstile = new Turnstile($secret);
 
 /** @var TurnstileValidateResponseDTO $response */
 $response = $turnstile->validate(new TurnstileValidateDTO(

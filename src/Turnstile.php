@@ -55,7 +55,7 @@ class Turnstile
                 ],
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_FOLLOWLOCATION => 1,
+                CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_CONNECTTIMEOUT => $data->getConnectionTimeout(),
                 CURLOPT_TIMEOUT => $data->getResponseTimeout(),
                 CURLOPT_POSTFIELDS => json_encode(array_filter([
