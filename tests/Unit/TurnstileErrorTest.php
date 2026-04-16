@@ -2,7 +2,7 @@
 
 use VincenzoRaco\Turnstile\Enums\TurnstileError;
 
-test('from() returns correct case for each known error code', function (string $code, TurnstileError $expected) {
+test('from() returns correct case for each known error code', function (string $code, TurnstileError $expected): void {
     expect(TurnstileError::from($code))->toBe($expected);
 })->with([
     ['missing-input-secret', TurnstileError::MISSING_INPUT_SECRET],
@@ -15,13 +15,13 @@ test('from() returns correct case for each known error code', function (string $
     ['undocumented', TurnstileError::UNDOCUMENTED],
 ]);
 
-test('getDescription returns a non-empty string for every case', function (TurnstileError $case) {
+test('getDescription returns a non-empty string for every case', function (TurnstileError $case): void {
     expect($case->getDescription())->toBeString()->not->toBeEmpty();
 })->with(TurnstileError::cases());
 
-test('each case has a unique description', function () {
+test('each case has a unique description', function (): void {
     $descriptions = array_map(
-        fn (TurnstileError $case) => $case->getDescription(),
+        fn (TurnstileError $case): string => $case->getDescription(),
         TurnstileError::cases(),
     );
 

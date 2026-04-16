@@ -23,43 +23,43 @@ function createResponseDTO(
     );
 }
 
-test('isSuccess returns true when success is true', function () {
+test('isSuccess returns true when success is true', function (): void {
     $dto = createResponseDTO(success: true);
 
     expect($dto->isSuccess())->toBeTrue();
 });
 
-test('isSuccess returns false when success is false', function () {
+test('isSuccess returns false when success is false', function (): void {
     $dto = createResponseDTO(success: false);
 
     expect($dto->isSuccess())->toBeFalse();
 });
 
-test('isFailure returns true when success is false', function () {
+test('isFailure returns true when success is false', function (): void {
     $dto = createResponseDTO(success: false);
 
     expect($dto->isFailure())->toBeTrue();
 });
 
-test('isFailure returns false when success is true', function () {
+test('isFailure returns false when success is true', function (): void {
     $dto = createResponseDTO(success: true);
 
     expect($dto->isFailure())->toBeFalse();
 });
 
-test('isSuccess and isFailure are always opposite', function (bool $success) {
+test('isSuccess and isFailure are always opposite', function (bool $success): void {
     $dto = createResponseDTO(success: $success);
 
     expect($dto->isSuccess())->toBe(! $dto->isFailure());
 })->with([true, false]);
 
-test('getChallengeDatetime returns a DateTimeImmutable instance', function () {
+test('getChallengeDatetime returns a DateTimeImmutable instance', function (): void {
     $dto = createResponseDTO(challengeTimestamp: '2024-01-15T12:00:00Z');
 
     expect($dto->getChallengeDatetime())->toBeInstanceOf(DateTimeImmutable::class);
 });
 
-test('getChallengeDatetime returns the correct date', function () {
+test('getChallengeDatetime returns the correct date', function (): void {
     $dto = createResponseDTO(challengeTimestamp: '2024-06-20T15:30:00Z');
 
     $datetime = $dto->getChallengeDatetime();
@@ -71,13 +71,13 @@ test('getChallengeDatetime returns the correct date', function () {
         ->and($datetime->format('i'))->toBe('30');
 });
 
-test('getHostname returns the hostname', function () {
+test('getHostname returns the hostname', function (): void {
     $dto = createResponseDTO(hostname: 'my-site.org');
 
     expect($dto->getHostname())->toBe('my-site.org');
 });
 
-test('getErrors maps string error codes to TurnstileError enum cases', function () {
+test('getErrors maps string error codes to TurnstileError enum cases', function (): void {
     $dto = createResponseDTO(errors: ['missing-input-secret', 'bad-request']);
 
     $errors = $dto->getErrors();
@@ -87,32 +87,32 @@ test('getErrors maps string error codes to TurnstileError enum cases', function 
         ->and($errors[1])->toBe(TurnstileError::BAD_REQUEST);
 });
 
-test('getErrors returns empty array when no errors', function () {
+test('getErrors returns empty array when no errors', function (): void {
     $dto = createResponseDTO(errors: []);
 
     expect($dto->getErrors())->toBeEmpty()
         ->and($dto->getErrors())->toBeArray();
 });
 
-test('getAction returns the action string', function () {
+test('getAction returns the action string', function (): void {
     $dto = createResponseDTO(action: 'signup');
 
     expect($dto->getAction())->toBe('signup');
 });
 
-test('getCustomerData returns the customer data', function () {
+test('getCustomerData returns the customer data', function (): void {
     $dto = createResponseDTO(customerData: 'user-123');
 
     expect($dto->getCustomerData())->toBe('user-123');
 });
 
-test('getEphemeralId returns null when null', function () {
+test('getEphemeralId returns null when null', function (): void {
     $dto = createResponseDTO(ephemeralId: null);
 
     expect($dto->getEphemeralId())->toBeNull();
 });
 
-test('getEphemeralId returns string when provided', function () {
+test('getEphemeralId returns string when provided', function (): void {
     $dto = createResponseDTO(ephemeralId: 'eph-abc-123');
 
     expect($dto->getEphemeralId())->toBe('eph-abc-123');
