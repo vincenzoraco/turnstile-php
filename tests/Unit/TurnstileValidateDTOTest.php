@@ -2,7 +2,7 @@
 
 use VincenzoRaco\Turnstile\DataObjects\TurnstileValidateDTO;
 
-test('it creates DTO with default values when only token is provided', function () {
+test('it creates DTO with default values when only token is provided', function (): void {
     $dto = new TurnstileValidateDTO('test-token');
 
     expect($dto->getToken())->toBe('test-token')
@@ -11,7 +11,7 @@ test('it creates DTO with default values when only token is provided', function 
         ->and($dto->getResponseTimeout())->toBe(30);
 });
 
-test('it creates DTO with all parameters', function () {
+test('it creates DTO with all parameters', function (): void {
     $dto = new TurnstileValidateDTO(
         token: 'my-token',
         ip: '192.168.1.1',
@@ -25,31 +25,31 @@ test('it creates DTO with all parameters', function () {
         ->and($dto->getResponseTimeout())->toBe(15);
 });
 
-test('getToken returns the token string', function () {
+test('getToken returns the token string', function (): void {
     $dto = new TurnstileValidateDTO('abc123');
 
     expect($dto->getToken())->toBe('abc123');
 });
 
-test('getIp returns null when not provided', function () {
+test('getIp returns null when not provided', function (): void {
     $dto = new TurnstileValidateDTO('token');
 
     expect($dto->getIp())->toBeNull();
 });
 
-test('getIp returns the IP when provided', function () {
+test('getIp returns the IP when provided', function (): void {
     $dto = new TurnstileValidateDTO('token', '10.0.0.1');
 
     expect($dto->getIp())->toBe('10.0.0.1');
 });
 
-test('getConnectionTimeout returns the connection timeout', function () {
+test('getConnectionTimeout returns the connection timeout', function (): void {
     $dto = new TurnstileValidateDTO('token', connectionTimeout: 20);
 
     expect($dto->getConnectionTimeout())->toBe(20);
 });
 
-test('getResponseTimeout returns the response timeout', function () {
+test('getResponseTimeout returns the response timeout', function (): void {
     $dto = new TurnstileValidateDTO('token', responseTimeout: 60);
 
     expect($dto->getResponseTimeout())->toBe(60);
