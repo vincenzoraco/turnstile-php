@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VincenzoRaco\Turnstile\DataObjects;
 
-use Carbon\CarbonImmutable;
+use DateTimeImmutable;
 use VincenzoRaco\Turnstile\Enums\TurnstileError;
 
 readonly class TurnstileValidateResponseDTO
@@ -32,13 +32,13 @@ readonly class TurnstileValidateResponseDTO
         return ! $this->isSuccess();
     }
 
-    public function getChallengeDatetime(): ?CarbonImmutable
+    public function getChallengeDatetime(): ?DateTimeImmutable
     {
         if ($this->challengeTimestamp === null) {
             return null;
         }
 
-        return CarbonImmutable::parse($this->challengeTimestamp);
+        return new DateTimeImmutable($this->challengeTimestamp);
     }
 
     public function getHostname(): ?string

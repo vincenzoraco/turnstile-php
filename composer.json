@@ -16,8 +16,7 @@
     ],
     "require": {
         "php": "^8.3.0",
-        "ext-curl": "*",
-        "nesbot/carbon": "^3.8"
+        "ext-curl": "*"
     },
     "require-dev": {
         "laravel/pint": "^1.18.1",
